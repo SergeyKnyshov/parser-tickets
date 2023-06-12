@@ -5,4 +5,4 @@ class Crawler:
         self.date = date
         
     def get_html(self):
-        pass    
+        pass   

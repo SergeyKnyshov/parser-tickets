@@ -1,6 +1,7 @@
-from parent_pars import Parser
+from .parent_pars import Parser
 from bs4 import BeautifulSoup
 import datetime
+from tqdm import tqdm
 
 class ParserAviaSales(Parser):
 
@@ -8,7 +9,7 @@ class ParserAviaSales(Parser):
         
         lst_of_ticket = self.html.find_all('div', 'ticket-desktop')
         lst = []
-        for q in lst_of_ticket:
+        for q in tqdm(lst_of_ticket):
             query = self.get_route(q)
             if query["company"] != None:
                 lst.append(query)
@@ -37,7 +38,7 @@ class ParserAviaSales(Parser):
             airline = None        
         return airline   
             
-    def __get_origin_time(self, ticket):
+    def __get_origin_date(self, ticket):
         origin_time = ticket.find('div', class_ = 'segment-route__endpoint origin').find('div', attrs = {'data-test-id': 'time'}).text
         origin_date = ticket.find_all('div', class_ = 'segment-route__date')[0].text
         
@@ -45,7 +46,7 @@ class ParserAviaSales(Parser):
         res = datetime.datetime.strptime(f'{date} {origin_time}', '%d.%m.%Y %H:%M')
         return res
 
-    def __get_destination_time(self, ticket):
+    def __get_destination_date(self, ticket):
         destination_time = ticket.find('div', class_ = 'segment-route__endpoint destination').find('div', attrs = {'data-test-id': 'time'}).text
         destination_date = ticket.find_all('div', class_ = 'segment-route__date')[1].text
         
@@ -54,8 +55,7 @@ class ParserAviaSales(Parser):
         return res        
 
     def __get_duration(self, ticket): ## dest - origin
-        duration = ticket.find('div', class_ = 'segment-route__duration').text
-        return duration#self.format_duration(duration)
+        pass
     
     def __get_origin_airport(self, ticket):
         origin_airport = ticket.find('div', class_ = 'segment-route__path-endpoint --departure --plane').find('span').text
@@ -71,8 +71,8 @@ class ParserAviaSales(Parser):
                 'destination_city':self.__get_destination_city(html_of_ticket),
                 'price':self.__get_price(html_of_ticket),
                 'company':self.__get_airline(html_of_ticket),
-                'origin_time':self.__get_origin_time(html_of_ticket),
-                'destination_time':self.__get_destination_time(html_of_ticket),
+                'origin_date':self.__get_origin_date(html_of_ticket),
+                'destination_date':self.__get_destination_date(html_of_ticket),
                 'duration':self.__get_duration(html_of_ticket),
                 'types':'Plane'
         }

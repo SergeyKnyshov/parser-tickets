@@ -1,4 +1,4 @@
-from parent_crawl import Crawler
+from .parent_crawl import Crawler
 import selenium
 from selenium import webdriver
 from selenium.webdriver.common.by import By

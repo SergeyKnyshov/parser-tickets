@@ -1,7 +1,8 @@
-from parent_pars import Parser
+from .parent_pars import Parser
 from bs4 import BeautifulSoup
 import datetime
 import re
+from tqdm import tqdm
 
 class ParserRailway(Parser):
 
@@ -9,7 +10,7 @@ class ParserRailway(Parser):
 
         lst_of_ticket = self.html.find_all('div', 'wg-train-options__wrap')
         lst = []
-        for q in lst_of_ticket:
+        for q in tqdm(lst_of_ticket):
             query = self.get_route(q)
             lst.append(query)
             
@@ -34,24 +35,28 @@ class ParserRailway(Parser):
         
         return self.__edit_price(res)
     
-    def __get_origin_time(self, ticket):
-        return self.format_time_to_datetime(ticket.find_all('span', 'wg-track-info__time')[0].text)
+    # def __get_origin_time(self, ticket):
+    #     origin_time = self.format_time_to_datetime(ticket.find_all('span', 'wg-track-info__time')[0].text)
 
-    def __get_destination_time(self, ticket):
-        return self.format_time_to_datetime(ticket.find_all('span', 'wg-track-info__time')[1].text)
+    # def __get_destination_time(self, ticket):
+    #     return self.format_time_to_datetime(ticket.find_all('span', 'wg-track-info__time')[1].text)
 
-    def __get_origin_dates(self, ticket):
-        t = ticket.find_all('span', 'wg-track-info__date')[0].text
-        res = self.format_date(t)
-        return self.format_date_to_datetime(res)
+    def __get_origin_date(self, ticket):
+        origin_time = ticket.find_all('span', 'wg-track-info__time')[0].text
+        origin_date = ticket.find_all('span', 'wg-track-info__date')[0].text
+        origin_date = self.format_date(origin_date)
+        
+        return datetime.datetime.strptime(f'{origin_date} {origin_time}', '%d.%m.%Y %H:%M')
 
-    def __get_destination_dates(self, ticket):
-        t = ticket.find_all('span', 'wg-track-info__date')[1].text
-        res = self.format_date(t)
-        return self.format_date_to_datetime(res)
+    def __get_destination_date(self, ticket):
+        dest_time = ticket.find_all('span', 'wg-track-info__time')[1].text
+        dest_date = ticket.find_all('span', 'wg-track-info__date')[1].text
+        dest_date = self.format_date(dest_date)
+        
+        return datetime.datetime.strptime(f'{dest_date} {dest_time}', '%d.%m.%Y %H:%M')
 
     def __get_duration(self, ticket):
-        return self.format_duration(ticket.find('span', 'wg-track-info__duration-time').text)
+        pass
 
     def __get_origin_station(self, ticket):
         t = ticket.find_all('span', 'wg-track-info__station')[0].text
@@ -70,11 +75,9 @@ class ParserRailway(Parser):
         flight_dict = {'origin_city':self.__get_origin_city(html_of_ticket),
                 'destination_city':self.__get_destination_city(html_of_ticket),
                 'price':self.__get_plackart_price(html_of_ticket),
-                'airline':None,
-#                 'origin_time':self.__get_origin_time(html_of_ticket),
-#                 'destination_time':self.__get_destination_time(html_of_ticket),
-#                 'origin_dates':self.__get_origin_dates(html_of_ticket),
-#                 'destination_dates':self.__get_destination_dates(html_of_ticket),
+                'company':'РЖД',
+                'origin_date':self.__get_origin_date(html_of_ticket),
+                'destination_date':self.__get_destination_date(html_of_ticket),
                 'duration':self.__get_duration(html_of_ticket),
                 'types':'Train'
         }
