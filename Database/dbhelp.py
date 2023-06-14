@@ -16,7 +16,7 @@ class DBhelper:
         dict_city = {'origin_city':origin_city, 'destination_city':destination_city}
         city_id = self.__get_city_id(dict_city)
         
-        if city_id:
+        if city_id != None:
             with self.session.begin() as session:
                 ex_trip = select(Trip).where(
                     Trip.route_id == city_id
