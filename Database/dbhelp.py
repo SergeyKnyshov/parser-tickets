@@ -9,9 +9,24 @@ class DBhelper:
     def __init__(self, path):
         self.engine = create_engine(path)
         self.session = sessionmaker(self.engine)
-        
         init_schema(self.engine)
+    
+    def check_exist_trip_by_route(self, origin_city, destination_city):
         
+        dict_city = {'origin_city':origin_city, 'destination_city':destination_city}
+        city_id = self.__get_city_id(dict_city)
+        
+        with self.session.begin() as session:
+            ex_trip = select(Trip).where(
+                Trip.route_id == city_id
+            )
+        
+            trip = session.scalar(ex_trip)
+            if trip:
+                return True
+            else:
+                return False
+    
     def check_exist_trip(self, trip_dict):
         with self.session.begin() as session:
             ex_trip = select(Trip).where(

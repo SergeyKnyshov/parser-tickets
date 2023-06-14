@@ -11,27 +11,33 @@ class ParserController:
         self.destination = destination
         self.date = date
         self.engine = 'sqlite:///Trips.db'
+        self.db = DBhelper(self.engine)
         
-    def get_tickets(self):
+    def get_tickets_from_web(self):
         
-        crawl_web1 = self.__get_avia_tickets()
-        crawl_web2 = self.__get_rail_tickets()
+        if not self.db.check_exist_trip_by_route(self.origin, self.destination):
+            crawl_web1 = self.__get_avia_tickets_from_web()
+            crawl_web2 = self.__get_rail_tickets_from_web()
+            
+            tickets_lst = []
+            tickets_lst.extend(crawl_web1)
+            tickets_lst.extend(crawl_web2)
+
+            self.add_tickets_into_db(tickets_lst)
+            
+            return tickets_lst
+        else:
+            print('Данный маршрут уже присутствует в базе данных!')
         
-        lst_of_tickets = []
-        lst_of_tickets.extend(crawl_web1)
-        lst_of_tickets.extend(crawl_web2)
         
-        return lst_of_tickets
-        
-        
-    def __get_avia_tickets(self):
+    def __get_avia_tickets_from_web(self):
         crawl = CrawlerAviaSales(self.origin, self.destination, self.date)
         crawl_web = crawl.get_html()
         
         pars = ParserAviaSales(crawl_web)
         return pars.get_tickets()
     
-    def __get_rail_tickets(self):
+    def __get_rail_tickets_from_web(self):
         crawl = CrawlerRailway(self.origin, self.destination, self.date)
         crawl_web = crawl.get_html()
         
@@ -39,13 +45,11 @@ class ParserController:
         return pars.get_tickets()
     
     def add_tickets_into_db(self, lst_of_tickets):
-        db = DBhelper(self.engine)
-        for el in lst_of_tickets:
-            db.add_ticket(el)
         
         for el in tqdm(lst_of_tickets):
-            db.add_ticket(el)
-            
+            self.db.add_ticket(el)
+        
+        
         
         
         
