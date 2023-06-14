@@ -97,5 +97,6 @@ dict_city_translit = {
     'Омск': 'omsk',
     'Оренбург': 'orenburg',
     'Орск': 'orsk',
-    'Москва': 'moskva'
+    'Москва': 'moskva',
+    'Сочи': 'sochi'
 }

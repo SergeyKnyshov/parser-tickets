@@ -49,7 +49,12 @@ class ParserController:
         for el in tqdm(lst_of_tickets):
             self.db.add_ticket(el)
         
+    def get_tickets_from_db(self, origin_city, destination_city):
         
+        while True:
+            tick = self.db.get_trip(origin_city, destination_city)
+            print(tick)
+
         
         
         
