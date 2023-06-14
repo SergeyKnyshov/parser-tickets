@@ -65,10 +65,7 @@ class ParserAviaSales(Parser):
     def __get_duration(self, ticket):
         date1 = self.__get_origin_date(ticket)
         date2 = self.__get_destination_date(ticket)
-        res = date2 - date1
-        res += datetime.datetime.today()
-        res -= datetime.datetime.today() 
-        return res
+        return date2 - date1
     
     def get_route(self, html_of_ticket):
 
@@ -78,7 +75,7 @@ class ParserAviaSales(Parser):
                 'company':self.__get_airline(html_of_ticket),
                 'origin_date':self.__get_origin_date(html_of_ticket),
                 'destination_date':self.__get_destination_date(html_of_ticket),
-                # 'duration':self.__get_duration(html_of_ticket),
+                'duration':'',#self.__get_duration(html_of_ticket),
                 'types':'Plane'
         }
         return flight_dict
