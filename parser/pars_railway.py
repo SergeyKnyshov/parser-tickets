@@ -50,7 +50,9 @@ class ParserRailway(Parser):
         return datetime.datetime.strptime(f'{dest_date} {dest_time}', '%d.%m.%Y %H:%M')
 
     def __get_duration(self, ticket):
-        pass
+        date1 = self.__get_origin_date(ticket)
+        date2 = self.__get_destination_date(ticket)
+        return date2 - date1
 
     def __get_origin_station(self, ticket):
         t = ticket.find_all('span', 'wg-track-info__station')[0].text
@@ -72,7 +74,7 @@ class ParserRailway(Parser):
                 'company':'РЖД',
                 'origin_date':self.__get_origin_date(html_of_ticket),
                 'destination_date':self.__get_destination_date(html_of_ticket),
-                'duration':self.get_duration(html_of_ticket),
+                'duration':self.__get_duration(html_of_ticket),
                 'types':'Train'
         }
         return flight_dict
