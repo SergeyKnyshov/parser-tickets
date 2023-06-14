@@ -13,7 +13,7 @@ class CrawlerRailway(Crawler):
         
         dep_city = translit(self.departure_city.lower(), 'ru', reversed=True)
         dest_city = translit(self.destination_city.lower(), 'ru', reversed=True) 
-        date = self.date + '.' + datetime.now().year
+        date = self.date + '.' + str(datetime.datetime.now().year)
         
         chrome_options = Options()
         #chrome_options.add_experimental_option("detach", True)
