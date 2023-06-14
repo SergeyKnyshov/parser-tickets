@@ -69,7 +69,7 @@ class DBhelper:
         with self.session.begin() as session:  
             if not self.__check_exist_company(trip_dict):
                 airl = Company(
-                    airline = trip_dict['company']
+                    company = trip_dict['company']
                 )
 
                 session.add(airl)
@@ -145,7 +145,7 @@ class DBhelper:
                 Trip.origin_date == req_dict['origin_date'],
                 Trip.price == min_price
             )
-            return session
+            return trip
     
     def __req_ticket_if_time(self, req_dict):
         with self.session as session:
