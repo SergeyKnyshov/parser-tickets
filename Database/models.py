@@ -23,7 +23,7 @@ class Trip(Base):
     price = Column(String)
     origin_date = Column(DateTime)
     destination_date = Column(DateTime)
-    duration = Column(DateTime)
+    duration = Column(DateTime, default=None)
     types = Column(String)
     TTL = Column(DateTime, server_default = func.now())
 
