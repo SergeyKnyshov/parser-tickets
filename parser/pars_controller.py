@@ -13,6 +13,7 @@ class ParserController:
         self.engine = 'sqlite:///Trips.db'
         
     def get_tickets(self):
+        
         crawl_web1 = self.__get_avia_tickets()
         crawl_web2 = self.__get_rail_tickets()
         

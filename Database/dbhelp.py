@@ -1,4 +1,5 @@
 from .create_db import init_schema
+from .models import City, Trip, Company
 from sqlalchemy import create_engine, func
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.orm import Session
