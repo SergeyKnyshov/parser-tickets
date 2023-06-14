@@ -19,7 +19,7 @@ class Trip(Base):
     __tablename__ = 'PlaneTrain'
     id = Column(Integer, primary_key=True)
     route_id = Column(Integer, ForeignKey('cities.id'))
-    airline_id = Column(Integer, ForeignKey('companies.id'))
+    company_id = Column(Integer, ForeignKey('companies.id'))
     price = Column(String)
     origin_date = Column(DateTime)
     destination_date = Column(DateTime)
@@ -28,5 +28,5 @@ class Trip(Base):
     TTL = Column(DateTime, server_default = func.now())
 
     origin_city = relationship("City", foreign_keys=[route_id])
-    airline = relationship("companies")
+    company = relationship("companies")
 
