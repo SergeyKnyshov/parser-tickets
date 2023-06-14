@@ -23,14 +23,3 @@ class Parser:
         res = day + '.' + mon + '.' +  str(datetime.datetime.now().year)
 
         return res
-
-    def __get_origin_date(self, ticket):
-        pass
-
-    def __get_destination_date(self, ticket):
-        pass        
-
-    def get_duration(self, ticket):
-        date1 = self.__get_origin_date(ticket)
-        date2 = self.__get_destination_date(ticket)
-        return date2 - date1
