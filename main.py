@@ -1,6 +1,6 @@
-from crawler.crawl_railway import CrawlerRailway
+from datetime import datetime
 
-cr = CrawlerRailway('Челябинск', 'Москва', '16.06')
-#cr.get_html()
+date1 = datetime(2022, 8, 1)
+date2 = datetime(2022, 9, 1)
 
-print(cr)
+print(datetime(2022, 9, 1) - datetime(2022, 8, 1))

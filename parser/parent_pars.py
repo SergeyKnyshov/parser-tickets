@@ -31,4 +31,6 @@ class Parser:
         pass        
 
     def get_duration(self):
-        return self.__get_destination_date - self.__get_origin_date
+        date1 = self.__get_origin_date
+        date2 = self.__get_destination_date
+        return date2 - date1
