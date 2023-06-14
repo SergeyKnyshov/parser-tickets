@@ -72,7 +72,7 @@ class ParserRailway(Parser):
                 'company':'РЖД',
                 'origin_date':self.__get_origin_date(html_of_ticket),
                 'destination_date':self.__get_destination_date(html_of_ticket),
-                'duration':self.__get_duration(),
+                'duration':self.get_duration(html_of_ticket),
                 'types':'Train'
         }
         return flight_dict

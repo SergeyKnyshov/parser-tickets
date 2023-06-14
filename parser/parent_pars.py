@@ -30,7 +30,7 @@ class Parser:
     def __get_destination_date(self, ticket):
         pass        
 
-    def get_duration(self):
-        date1 = self.__get_origin_date()
-        date2 = self.__get_destination_date()
+    def get_duration(self, ticket):
+        date1 = self.__get_origin_date(ticket)
+        date2 = self.__get_destination_date(ticket)
         return date2 - date1
