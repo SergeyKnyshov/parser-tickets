@@ -52,6 +52,7 @@ class ParserAviaSales(Parser):
         
         date = self.format_date(destination_date)
         res = datetime.datetime.strptime(f'{date} {destination_time}', '%d.%m.%Y %H:%M')
+        print(type(res))
         return res        
     
     def __get_origin_airport(self, ticket):
