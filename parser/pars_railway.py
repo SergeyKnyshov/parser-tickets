@@ -35,12 +35,6 @@ class ParserRailway(Parser):
         
         return self.__edit_price(res)
     
-    # def __get_origin_time(self, ticket):
-    #     origin_time = self.format_time_to_datetime(ticket.find_all('span', 'wg-track-info__time')[0].text)
-
-    # def __get_destination_time(self, ticket):
-    #     return self.format_time_to_datetime(ticket.find_all('span', 'wg-track-info__time')[1].text)
-
     def __get_origin_date(self, ticket):
         origin_time = ticket.find_all('span', 'wg-track-info__time')[0].text
         origin_date = ticket.find_all('span', 'wg-track-info__date')[0].text
