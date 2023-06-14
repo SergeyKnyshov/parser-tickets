@@ -102,8 +102,8 @@ class DBhelper:
                     route_id = self.__get_city_id(trip_dict),
                     company_id = self.__get_company_id(trip_dict),
                     price = trip_dict['price'], 
-                    origin_dates = trip_dict['origin_dates'],  
-                    destination_dates = trip_dict['destination_dates'],  
+                    origin_dates = trip_dict['origin_date'],  
+                    destination_dates = trip_dict['destination_date'],  
                     duration = trip_dict['duration'],  
                     types = trip_dict['types']
                 )
