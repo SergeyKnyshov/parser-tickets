@@ -52,7 +52,10 @@ class ParserRailway(Parser):
     def __get_duration(self, ticket):
         date1 = self.__get_origin_date(ticket)
         date2 = self.__get_destination_date(ticket)
-        return date2 - date1
+        res = date2 - date1
+        res += datetime.datetime.today()
+        res -= datetime.datetime.today() 
+        return res
 
     def __get_origin_station(self, ticket):
         t = ticket.find_all('span', 'wg-track-info__station')[0].text
