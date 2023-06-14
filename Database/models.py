@@ -1,9 +1,7 @@
-import sqlalchemy 
-from sqlalchemy import create_engine, Column, Integer, String, DateTime, ForeignKey, func
+from sqlalchemy import Column, Integer, String, DateTime, ForeignKey, func
 from sqlalchemy.orm import relationship
 from sqlalchemy.orm import DeclarativeBase
 
-engine = create_engine('sqlite:///Trips.db')
 class Base(DeclarativeBase): pass
 
 class City(Base):
@@ -32,4 +30,3 @@ class Trip(Base):
     origin_city = relationship("City", foreign_keys=[route_id])
     airline = relationship("companies")
 
-Base.metadata.create_all(bind=engine)

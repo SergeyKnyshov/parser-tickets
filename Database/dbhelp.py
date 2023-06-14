@@ -8,6 +8,7 @@ class DBhelper:
     def __init__(self, path):
         self.engine = create_engine(path)
         self.session = sessionmaker(self.engine)
+        
         init_schema()
         
     def check_exist_trip(self, trip_dict):
