@@ -1,5 +1,5 @@
 from .parent_crawl import Crawler
-from transliterate import translit
+from dict_translit import dict_city_translit
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome.options import Options
@@ -11,8 +11,8 @@ class CrawlerRailway(Crawler):
     
     def get_html(self):
         
-        dep_city = translit(self.departure_city.lower(), 'ru', reversed=True)
-        dest_city = translit(self.destination_city.lower(), 'ru', reversed=True) 
+        dep_city = dict_city_translit[self.departure_city]
+        dest_city = dict_city_translit[self.destination_city]
         date = self.date + '.' + str(datetime.datetime.now().year)
         
         chrome_options = Options()
