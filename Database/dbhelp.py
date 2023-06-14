@@ -14,9 +14,13 @@ class DBhelper:
     def check_exist_trip_by_route(self, origin_city, destination_city):
         
         dict_city = {'origin_city':origin_city, 'destination_city':destination_city}
-        city_id = self.__get_city_id(dict_city)
         
-        if city_id != None:
+        try:
+            city_id = self.__get_city_id(dict_city)
+        except:
+            city_id = None
+            
+        if city_id:
             with self.session.begin() as session:
                 ex_trip = select(Trip).where(
                     Trip.route_id == city_id
