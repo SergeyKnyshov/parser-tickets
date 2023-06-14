@@ -1,5 +1,5 @@
 from .parent_crawl import Crawler
-from dict_translit import dict_city_translit
+from .dict_translit import dict_city_translit
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome.options import Options
