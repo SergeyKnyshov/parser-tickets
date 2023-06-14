@@ -23,10 +23,12 @@ class Parser:
         res = day + '.' + mon + '.' +  str(datetime.datetime.now().year)
 
         return res
-    
-    def format_date_to_datetime(self, date_str):
-        return datetime.datetime.strptime(f"{date_str}", "%d.%m.%Y")
-        
-    def format_time_to_datetime(self, time_str):
-        return datetime.datetime.strptime(time_str, "%H:%M")#.time()
-        
+
+    def __get_origin_date(self, ticket):
+        pass
+
+    def __get_destination_date(self, ticket):
+        pass        
+
+    def get_duration(self):
+        return self.__get_destination_date - self.__get_origin_date
