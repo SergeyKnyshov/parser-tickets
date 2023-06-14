@@ -28,5 +28,5 @@ class Trip(Base):
     TTL = Column(DateTime, server_default = func.now())
 
     origin_city = relationship("City", foreign_keys=[route_id])
-    company = relationship("companies")
+    company = relationship("Company")
 
