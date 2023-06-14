@@ -126,7 +126,7 @@ class DBhelper:
                     price = trip_dict['price'], 
                     origin_date = trip_dict['origin_date'],  
                     destination_date = trip_dict['destination_date'],  
-                    duration = trip_dict['duration'],  
+                    # duration = trip_dict['duration'],  
                     types = trip_dict['types']
                 )
 
