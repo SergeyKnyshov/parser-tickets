@@ -54,9 +54,6 @@ class ParserAviaSales(Parser):
         res = datetime.datetime.strptime(f'{date} {destination_time}', '%d.%m.%Y %H:%M')
         return res        
     
-    def __get_duration(self, orig, dest):
-        return dest - orig
-    
     def __get_origin_airport(self, ticket):
         origin_airport = ticket.find('div', class_ = 'segment-route__path-endpoint --departure --plane').find('span').text
         return origin_airport
@@ -73,7 +70,7 @@ class ParserAviaSales(Parser):
                 'company':self.__get_airline(html_of_ticket),
                 'origin_date':self.__get_origin_date(html_of_ticket),
                 'destination_date':self.__get_destination_date(html_of_ticket),
-                'duration':self.__get_duration(self.__get_destination_date, self.__get_origin_date),
+                'duration':self.get_duration(),
                 'types':'Plane'
         }
         return flight_dict
