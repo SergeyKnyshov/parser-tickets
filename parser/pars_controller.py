@@ -1,8 +1,8 @@
 from .pars_aviasales import ParserAviaSales
 from .pars_railway import ParserRailway
 from crawler.crawl_aviasales import CrawlerAviaSales
-from crawler.crawl_railway import CrawlerRailway
 from Database.dbhelp import DBhelper
+from crawler.crawl_railway import CrawlerRailway
 from tqdm import tqdm
 
 class ParserController:
@@ -39,6 +39,8 @@ class ParserController:
     
     def add_tickets_into_db(self, lst_of_tickets):
         db = DBhelper(self.engine)
+        for el in lst_of_tickets:
+            db.add_ticket(el)
         
         for el in tqdm(lst_of_tickets):
             db.add_ticket(el)
