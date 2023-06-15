@@ -191,14 +191,4 @@ class DBhelper:
                 
                 result.append(trip_dict)
         return result
-    # def __get_count_trip(self, origin_city, destination_city):
-    #     with self.session.begin() as session:
-    #         origin_city_id = self.__get_city_id(origin_city)
-    #         destination_city_id = self.__get_city_id(destination_city)
-            
-    #         count = select(all()).select_from(Trip).where(
-    #             Trip.origin_city_id == origin_city_id,
-    #             Trip.destination_city_id == destination_city_id
-    #         )
-            
         

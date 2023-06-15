@@ -104,6 +104,3 @@ class AnalyticsController:
         return res
         
         
-    def build_traces(self):
-        pass
-    

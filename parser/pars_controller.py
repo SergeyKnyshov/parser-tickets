@@ -16,12 +16,19 @@ class ParserController:
     def get_tickets_from_web(self):
         
         if not self.db.check_exist_trip_by_route(self.origin, self.destination):
-            crawl_web1 = self.__get_avia_tickets_from_web()
-            crawl_web2 = self.__get_rail_tickets_from_web()
-            
             tickets_lst = []
-            tickets_lst.extend(crawl_web1)
-            tickets_lst.extend(crawl_web2)
+            try:
+                crawl_web1 = self.__get_avia_tickets_from_web()
+                tickets_lst.extend(crawl_web1)
+            except:
+                print('Отсутствует маршрут на aviasales')
+            try:
+                crawl_web2 = self.__get_rail_tickets_from_web()
+                tickets_lst.extend(crawl_web2)
+            except:
+                print('Отсутствует маршрут на РЖД')
+
+
 
             self.add_tickets_into_db(tickets_lst)
             
