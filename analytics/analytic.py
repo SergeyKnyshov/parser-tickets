@@ -13,10 +13,10 @@ class AnalyticsController:
         
         lst = self.lst_of_cities
         
-        dict_lst = []
+        # dict_lst = []
         
         for i in range(len(lst)-1):
-            if type(lst[i]) is tuple and type(lst[i+1]) is list:
+            if type(lst[i]) is tuple and type(lst[i+1]) is list:  ## первый город-список
                 for el in lst[i+1]:
                     dep_city = lst[i][0]
                     des_city = el[0]
@@ -24,7 +24,7 @@ class AnalyticsController:
                     
                     self.build_route_edge(dep_city, des_city, dep_date)    
                     
-            elif type(lst[i]) is list and type(lst[i+1]) is list:
+            elif type(lst[i]) is list and type(lst[i+1]) is list:  ## список-список
                 for fst_lst_el in lst[i]:
                     for sec_lst_el in lst[i+1]:
                         dep_city = fst_lst_el[0]
@@ -34,11 +34,33 @@ class AnalyticsController:
                         self.build_route_edge(dep_city, des_city, dep_date)
                 
             
-            elif type(lst[i]) is list and lst[i+1] == lst[-1]:
+            elif type(lst[i]) is list and lst[i+1] == lst[-1]:  ##  список-последний город
                 for el in lst[i]:
                     dep_city = el[0]
                     des_city = lst[i+1][0]
                     dep_date = el[1]
+                    
+                    self.build_route_edge(dep_city, des_city, dep_date)
+                    
+            elif type(lst[i]) is list and type(lst[i+1]) is tuple and lst[i+1] != lst[-1]:  ##  список-город
+                for el in lst[i]:
+                    dep_city = el[0]
+                    des_city = lst[i+1][0]
+                    dep_date = el[1]
+                    
+                    self.build_route_edge(dep_city, des_city, dep_date)
+                    
+            elif type(lst[i]) is tuple and type(lst[i+1]) is tuple and lst[i+1] != lst[-1]:  ## первый город-город
+                    dep_city = lst[i][0]
+                    des_city = lst[i+1][0]
+                    dep_date = lst[i][1]
+                    
+                    self.build_route_edge(dep_city, des_city, dep_date)
+                    
+            elif type(lst[i]) is tuple and lst[i+1] == lst[-1]:  ##  город-последний город
+                    dep_city = lst[i][0]
+                    des_city = lst[i+1]
+                    dep_date = lst[i][1]
                     
                     self.build_route_edge(dep_city, des_city, dep_date)
                     
@@ -49,11 +71,14 @@ class AnalyticsController:
         
         route = ParserController(depart_city, destin_city, date)  ## город, дата, город
         
-        route_tickets = route.get_tickets_from_web()
-        if not route_tickets:  ## Если есть в базе данных
-            route_tickets = route.get_tickets_from_db(depart_city, destin_city)
-            
-        route_ticket = self.__get_right_route(route_tickets)
+        lst_of_route_tickets = route.get_tickets_from_web()
+        if lst_of_route_tickets == False:  ## Если есть в базе данных
+            rout_tickets = route.get_tickets_from_db(depart_city, destin_city)
+        else:
+            rout_tickets = lst_of_route_tickets
+        
+        rout_tickets = self.__add_duration_into_dict(rout_tickets)
+        route_ticket = self.__get_right_route(rout_tickets)
         coords = self.__unpack_dict_to_coords(route_ticket)
         self.map.add_way(coords[0], coords[1], route_ticket)
 
@@ -95,5 +120,11 @@ class AnalyticsController:
                 res = el
                 
         return res
+    
+    def __add_duration_into_dict(self, lst_of_dict):
+        for el in lst_of_dict:
+            el['duration'] = el['destination_date'] - el['origin_date']
+            
+        return lst_of_dict
         
         

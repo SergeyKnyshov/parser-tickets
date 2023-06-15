@@ -58,10 +58,10 @@ class DBhelper:
                 City.city == city_to_add
             )
             
-            route = session.scalar(ex_route)
-            if route:
-                return True
-            else:
+            try:
+                route = session.scalar(ex_route)
+                return route
+            except:
                 return False
             
     def __check_exist_company(self, company_to_add):
@@ -136,7 +136,6 @@ class DBhelper:
                 session.commit()
                 print("Рейс успешно добавлен в базу данных.")
             else:
-                print('Такая запись уже существует!')
                 return
 
     def __get_city_by_id(self, city_id):
@@ -177,7 +176,7 @@ class DBhelper:
             result = []
             
             for el in res:
-                duration = el.destination_date - el.origin_date
+                # duration = el.destination_date - el.origin_date
             
                 trip_dict = {'origin_city': origin_city,
                         'destination_city': destination_city,
@@ -185,7 +184,7 @@ class DBhelper:
                         'company':self.__get_company_by_id(el.company_id),
                         'origin_date':el.origin_date,
                         'destination_date':el.destination_date,
-                        'duration': duration,
+                        # 'duration': duration,
                         'types':el.types
                 }
                 
