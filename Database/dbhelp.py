@@ -171,7 +171,7 @@ class DBhelper:
                     Trip.destination_city_id == dest_city_id
                 )
             except:
-                print('Данный маршрут отсутствует в базе!')
+                print(f'Маршрут {origin_city}-{destination_city} отсутствует в базе, идет подкачка...')
             
             res = session.scalars(trip)
             result = []

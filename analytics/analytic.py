@@ -5,73 +5,66 @@ from .coords import geoloc
 class AnalyticsController:
     def __init__(self, lst_of_cities, turn):
         self.lst_of_cities = lst_of_cities  ## [(Чел, 13.06), [(Волг), Сочи, Калин], [] Моск]
+        self.turn = turn
         self.map = Map()
-        if turn == 'price':
-            self.turn = 'price'
-        elif turn == 'time':
-            self.turn = 'time'
-            
         
         
-    def build_route(self):
+    def build_full_route(self):
         
         lst = self.lst_of_cities
         
         dict_lst = []
         
-        for i in range(len(lst)):
+        for i in range(len(lst)-1):
             if type(lst[i]) is tuple and type(lst[i+1]) is list:
                 for el in lst[i+1]:
-                    route = ParserController((lst[i][0], el[0], lst[i][1]))  ## город, дата, город
+                    dep_city = lst[i][0]
+                    des_city = el[0]
+                    dep_date = lst[i][1]
                     
-                    route_tickets = route.get_tickets_from_web()
-                    if not route_tickets:  ## Если есть в базе данных
-                        route_tickets = route.get_tickets_from_db((lst[i][0], el[0]))
-                        
-                    route_ticket = self.__get_right_route(route_tickets)
-                    coords = self.__unpack_dict_to_coords(route_ticket)
-                    self.map.add_way(coords[0], coords[1])
+                    self.build_route_edge(dep_city, des_city, dep_date)    
                     
             elif type(lst[i]) is list and type(lst[i+1]) is list:
-                for elem in lst[i]:
-                    for el in lst[i+1]:
-                        route = ParserController((elem[0], el[0], elem[1]))
+                for fst_lst_el in lst[i]:
+                    for sec_lst_el in lst[i+1]:
+                        dep_city = fst_lst_el[0]
+                        des_city = sec_lst_el[0]
+                        dep_date = fst_lst_el[1]
                         
-                        route_tickets = route.get_tickets_from_web()
-                        if not route_tickets:
-                            route_tickets = route.get_tickets_from_db((elem[0], el[0]))
-                            
-                        route_ticket = self.__get_right_route(route_tickets)    
-                        coords = self.__unpack_dict_to_coords(route_ticket)
-                        self.map.add_way(coords[0], coords[1])
+                        self.build_route_edge(dep_city, des_city, dep_date)
+                
             
             elif type(lst[i]) is list and lst[i+1] == lst[-1]:
                 for el in lst[i]:
-                    route = ParserController((el[0], lst[i+1], el[1]))
-                        
-                    route_tickets = route.get_tickets_from_web()
-                    if not route_tickets:
-                        route_tickets = route.get_tickets_from_db((el[0], lst[i+1][0]))
-                        
-                    route_ticket = self.__get_right_route(route_tickets)
-                    coords = self.__unpack_dict_to_coords(route_ticket)
-                    self.map.add_way(coords[0], coords[1])
+                    dep_city = el[0]
+                    des_city = lst[i+1][0]
+                    dep_date = el[1]
+                    
+                    self.build_route_edge(dep_city, des_city, dep_date)
+                    
             else:
                 print('ERROR!')
-                        
-                
+                    
+    def build_route_edge(self, depart_city, destin_city, date):      
+        
+        route = ParserController(depart_city, destin_city, date)  ## город, дата, город
+        
+        route_tickets = route.get_tickets_from_web()
+        if not route_tickets:  ## Если есть в базе данных
+            route_tickets = route.get_tickets_from_db(depart_city, destin_city)
+            
+        route_ticket = self.__get_right_route(route_tickets)
+        coords = self.__unpack_dict_to_coords(route_ticket)
+        self.map.add_way(coords[0], coords[1])
 
     def __unpack_dict_to_coords(self, dict_of_way):
 
         coords = (dict_of_way['origin_city'], dict_of_way['destination_city'])
-
-        
         orig_coords = geoloc.geocode(coords[0])
         dest_coords = geoloc.geocode(coords[1])
         
         return [(orig_coords.longitude, dest_coords.longitude), (orig_coords.latitude, dest_coords.latitude)]
         
-
     def __get_right_route(self, lst_of_tickets):
         if self.turn == 'price':
             res = self.__get_min_price(lst_of_tickets)

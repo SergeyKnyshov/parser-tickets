@@ -10,7 +10,7 @@ class ParserRailway(Parser):
 
         lst_of_ticket = self.html.find_all('div', 'wg-train-options__wrap')
         lst = []
-        for q in tqdm(lst_of_ticket):
+        for q in lst_of_ticket:
             query = self.get_route(q)
             lst.append(query)
             

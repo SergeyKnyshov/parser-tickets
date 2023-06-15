@@ -9,7 +9,7 @@ class ParserAviaSales(Parser):
         
         lst_of_ticket = self.html.find_all('div', 'ticket-desktop')
         lst = []
-        for q in tqdm(lst_of_ticket):
+        for q in lst_of_ticket:
             query = self.get_route(q)
             if query["company"] != None:
                 lst.append(query)
