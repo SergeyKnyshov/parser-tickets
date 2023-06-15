@@ -6,7 +6,7 @@ class Map:
 
     def show_map(self):
         self.fig.update_layout(
-
+            margin={'l': 0, 't': 0, 'b': 0, 'r': 0},
             mapbox={
                 'center': {'lon': 10, 'lat': 10},
                 'style': "stamen-terrain",
