@@ -55,7 +55,7 @@ class AnalyticsController:
             
         route_ticket = self.__get_right_route(route_tickets)
         coords = self.__unpack_dict_to_coords(route_ticket)
-        self.map.add_way(coords[0], coords[1])
+        self.map.add_way(coords[0], coords[1], route_ticket)
 
     def __unpack_dict_to_coords(self, dict_of_way):
 
@@ -78,7 +78,7 @@ class AnalyticsController:
 
         for el in lst:
             lst_of_min_time.append(el['duration'])
-        min_time = max(lst)
+        min_time = min(lst_of_min_time)
         for el in lst:
             if el['duration'] == min_time:
                 res = el
