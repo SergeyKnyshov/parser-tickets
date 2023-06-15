@@ -6,10 +6,10 @@ from crawler.crawl_railway import CrawlerRailway
 from tqdm import tqdm
 
 class ParserController:
-    def __init__(self, origin, destination, date):
-        self.origin = origin
-        self.destination = destination
-        self.date = date
+    def __init__(self, req):
+        self.origin = req[0]
+        self.destination = req[1]
+        self.date = req[2]
         self.engine = 'sqlite:///Trips.db'
         self.db = DBhelper(self.engine)
         
@@ -28,6 +28,7 @@ class ParserController:
             return tickets_lst
         else:
             print('Данный маршрут уже присутствует в базе данных!')
+            return False
         
         
     def __get_avia_tickets_from_web(self):
@@ -49,12 +50,14 @@ class ParserController:
         for el in tqdm(lst_of_tickets):
             self.db.add_ticket(el)
         
-    def get_tickets_from_db(self, origin_city, destination_city):
+    def get_tickets_from_db(self, req):
         
-        while True:
-            tick = self.db.get_trip(origin_city, destination_city)
-            print(tick)
-
+        origin_city = req[0]
+        destination_city = req[1]
+        
+        tick = self.db.get_trip(origin_city, destination_city)
+        
+        return tick
         
         
         

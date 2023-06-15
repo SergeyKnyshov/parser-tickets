@@ -6,7 +6,7 @@ from sqlalchemy.orm import Session
 from sqlalchemy import select, table, column
 
 from geopy.geocoders import Bing
-from analytics.analytic import geoloc
+from analytics.coords import geoloc
 ## 'sqlite:///Trips.db'
 class DBhelper:
     def __init__(self, path):
@@ -172,27 +172,25 @@ class DBhelper:
                 )
             except:
                 print('Данный маршрут отсутствует в базе!')
+            
+            res = session.scalars(trip)
+            result = []
+            
+            for el in res:
+                duration = el.destination_date - el.origin_date
+            
+                trip_dict = {'origin_city': origin_city,
+                        'destination_city': destination_city,
+                        'price': el.price,
+                        'company':self.__get_company_by_id(el.company_id),
+                        'origin_date':el.origin_date,
+                        'destination_date':el.destination_date,
+                        'duration': duration,
+                        'types':el.types
+                }
                 
-            origin_date = session.scalar(trip).origin_date
-            destination_date = session.scalar(trip).destination_date
-            duration = destination_date - origin_date
-            orig_coords = geoloc.geocode(origin_city)
-            dest_coords = geoloc.geocode(destination_city)
-            
-            
-            trip_dict = {'origin_city': origin_city,
-                    'destination_city': destination_city,
-                    'price': session.scalar(trip).price,
-                    'company':self.__get_company_by_id(session.scalar(trip).company_id),
-                    'origin_date':origin_date,
-                    'destination_date':destination_date,
-                    'duration': duration,
-                    'origin_coords': orig_coords.latitude,
-                    'destination_coords':dest_coords.longitude,
-                    'types':session.scalar(trip).types
-            }
-            return trip_dict
-        
+                result.append(trip_dict)
+        return result
     # def __get_count_trip(self, origin_city, destination_city):
     #     with self.session.begin() as session:
     #         origin_city_id = self.__get_city_id(origin_city)
