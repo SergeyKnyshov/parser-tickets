@@ -1,6 +1,6 @@
 from parser.pars_controller import ParserController
-from .world_map import Map
-from .coords import geoloc
+from analytics.world_map import Map
+from analytics.coords import geoloc
 
 class AnalyticsController:
     def __init__(self, lst_of_cities, turn):
@@ -91,6 +91,8 @@ class AnalyticsController:
         return [(orig_coords.longitude, dest_coords.longitude), (orig_coords.latitude, dest_coords.latitude)]
         
     def __get_right_route(self, lst_of_tickets):
+        if not lst_of_tickets:
+            return None  # or raise an exception, depending on your requirements
         if self.turn == 'price':
             res = self.__get_min_price(lst_of_tickets)
         elif self.turn == 'time':
@@ -110,6 +112,10 @@ class AnalyticsController:
         return res
     
     def __get_min_price(self, lst):
+
+        if not lst:
+            return None  # or raise an exception, depending on your requirements
+
         lst_of_min_price = []
 
         for el in lst:

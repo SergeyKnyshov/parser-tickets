@@ -1,4 +1,4 @@
-from .parent_pars import Parser
+from parser.parent_pars import Parser
 from bs4 import BeautifulSoup
 import datetime
 from tqdm import tqdm

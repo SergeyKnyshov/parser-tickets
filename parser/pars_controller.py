@@ -1,5 +1,5 @@
-from .pars_aviasales import ParserAviaSales
-from .pars_railway import ParserRailway
+from parser.pars_aviasales import ParserAviaSales
+from parser.pars_railway import ParserRailway
 from crawler.crawl_aviasales import CrawlerAviaSales
 from Database.dbhelp import DBhelper
 from crawler.crawl_railway import CrawlerRailway

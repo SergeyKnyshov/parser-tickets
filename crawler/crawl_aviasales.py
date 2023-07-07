@@ -1,5 +1,5 @@
-from .parent_crawl import Crawler
-from .dict_sokr import dict_city
+from crawler.parent_crawl import Crawler
+from crawler.dict_sokr import dict_city
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome.options import Options

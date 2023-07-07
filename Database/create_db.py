@@ -1,4 +1,4 @@
-from .models import Base 
+from Database.models import Base
 
 ## 'sqlite:///Trips.db'
 
