@@ -79,8 +79,11 @@ class AnalyticsController:
         
         rout_tickets = self.__add_duration_into_dict(rout_tickets)
         route_ticket = self.__get_right_route(rout_tickets)
-        coords = self.__unpack_dict_to_coords(route_ticket)
-        self.map.add_way(coords[0], coords[1], route_ticket)
+        if route_ticket is not None:
+            coords = self.__unpack_dict_to_coords(route_ticket)
+            self.map.add_way(coords[0], coords[1], route_ticket)
+        else:
+            print("Не удалось получить маршрутные билеты.")
 
     def __unpack_dict_to_coords(self, dict_of_way):
 
